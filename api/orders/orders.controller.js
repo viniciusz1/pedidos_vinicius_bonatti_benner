@@ -17,6 +17,13 @@ router.get("/", (req, res) => {
 });
 
 router.put("/:id", (req, res) => {
+    ordersHandler.editOrder(req.params.id, req.body)
+    .then(e =>{
+      res.send(e)
+    })
+    .catch(err => {
+      res.send(err)
+    })
 });
 
 router.delete("/:id", (req, res) => {

@@ -20,6 +20,11 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
+    orderProductsHandler.deleteOrderProducts(req.params.id)
+    .then(e => res.send(e))
+    .catch(err => {
+        res.send(err)
+    })
 });
 
 module.exports = router;

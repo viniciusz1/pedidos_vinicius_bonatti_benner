@@ -36,12 +36,19 @@ async function getOrders(){
     return await crud.get('orders')
 }
 
-async function editOrder(idUser, user){
-    return await crud.save('orders', idUser, user)
+async function editOrder(orderId, order){
+    const orderProductsHandler = require('../orderProducts/orderProducts.handler')
+    const orderProducts = await orderProductsHandler.getOrderProducts()
+    if(!orderProducts.some(e => e.orderId == orderId)){
+        return "Add an item before close the order"
+    }
+    const newOrder = await getOrderById(orderId)
+    newOrder.status = order.status
+    return await crud.save('orders', orderId, newOrder)
 }
 
-async function deleteOrder(idUser){
-    return await crud.remove('orders', idUser)
+async function deleteOrder(idOrder){
+    return await crud.remove('orders', idOrder)
 }
 
 module.exports = {

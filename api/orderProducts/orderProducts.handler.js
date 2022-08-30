@@ -3,9 +3,8 @@ const crud = require('../../crud');
 async function createOrderProducts(orderProduct){
     const productsHandler = require('../products/products.handler')
     const ordersHandler = require('../orders/orders.handler')
-    if(!(await productsHandler.verifyifExistProduct(orderProduct.productId))){
-        return("Product not found")
-    }
+
+
     if(!(await ordersHandler.verifyifExistOrder(orderProduct.orderId))){
         return("Order not found")
     }
@@ -14,6 +13,20 @@ async function createOrderProducts(orderProduct){
     if(order.status != "open"){
         return ("You can't add products for this order!")
     }
+
+
+    for(let i of orderProduct.productsList){
+        if(!(await productsHandler.verifyifExistProduct(i.productId))){
+            return("Product not found")
+        }else{
+            const orderProducts = await getOrderProducts()
+            const newOrderProducts = orderProducts.filter(e => e.productId == i.productId)
+            console.log(newOrderProducts)
+            newOrderProducts.quantity = newOrderProducts.quantity + i.quantity
+            return crud.save('orderProducts', undefined, newOrderProducts)
+        }
+    }
+    
 
 }
 
