@@ -4,11 +4,18 @@ async function createOrder(order){
     const usersHandler = require('../users/users.handler')
 
     const createdOrders = await getOrders()
+    let numberOfOrder = 0
     for(let i of createdOrders){
-        if(i.status == "open"){
+        if(i.status == "open" && i.userId == order.userId){
             return "You already have one order opened"
+        }else if(i.status == "close" && i.userId == order.userId){
+            numberOfOrder++
         }
     }
+    order.status = "open"
+    order.number = numberOfOrder + 1
+
+
     if(await usersHandler.verifyifExistUser(order.userId)){
         return crud.save('orders', undefined, order)
     }else{
@@ -56,5 +63,6 @@ module.exports = {
     verifyifExistOrder,
     editOrder,
     deleteOrder,
-    getOrderById
+    getOrderById,
+    getOrders
 }

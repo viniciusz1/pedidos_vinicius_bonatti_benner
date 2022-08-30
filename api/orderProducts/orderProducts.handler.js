@@ -20,10 +20,18 @@ async function createOrderProducts(orderProduct){
             return("Product not found")
         }else{
             const orderProducts = await getOrderProducts()
-            const newOrderProducts = orderProducts.filter(e => e.productId == i.productId)
-            console.log(newOrderProducts)
-            newOrderProducts.quantity = newOrderProducts.quantity + i.quantity
-            return crud.save('orderProducts', undefined, newOrderProducts)
+            const newOrderProducts = orderProducts.find(e => e.productId == i.productId)
+            if(newOrderProducts != undefined){
+                newOrderProducts.quantity = newOrderProducts.quantity + i.quantity
+                return crud.save('orderProducts', newOrderProducts.id, newOrderProducts)
+            }else{
+                let adicionar = {
+                    productId: i.productId,
+                    quantity: i.quantity,
+                    orderId: orderProduct.orderId
+                }
+                return crud.save('orderProducts', undefined, adicionar)
+            }
         }
     }
     
@@ -35,7 +43,16 @@ async function getOrderProducts(){
 }
 
 async function editOrderProducts(idOrderProducts, orderProducts){
-    return await crud.save('orderProducts', idOrderProducts, orderProducts)
+    let ordersHandler = require('../orders/orders.handler')
+    let oldOrder = await getOrderProductsById(idOrderProducts)
+    oldOrder.quantity = orderProducts.quantity
+    let order = await ordersHandler.getOrderById(oldOrder.orderId)
+    if(order.status == 'open'){
+        console.log(oldOrder)
+        return await crud.save('orderProducts', idOrderProducts, oldOrder)
+    }else{
+        return "You can't change the quantity"
+    }
 }
 
 async function getOrderProductsById(id){
@@ -43,7 +60,6 @@ async function getOrderProductsById(id){
 }
 
 async function deleteOrderProducts(idOrderProducts){
-
     const ordersHandler = require('../orders/orders.handler')
     const orderProducts = await getOrderProductsById(idOrderProducts)
     const order = await ordersHandler.getOrderById(orderProducts.orderId)
@@ -58,5 +74,6 @@ module.exports = {
     createOrderProducts,
     getOrderProducts,
     editOrderProducts,
-    deleteOrderProducts
+    deleteOrderProducts,
+    getOrderProductsById
 }

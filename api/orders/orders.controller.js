@@ -10,10 +10,15 @@ router.post("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
+  ordersHandler.getOrderById(req.params.id)
+  .then(e => res.json(e))
+  .catch((err) => res.json(err))
 });
 
 router.get("/", (req, res) => {
-  res.json('oi');
+  ordersHandler.getOrders()
+  .then(e => res.json(e))
+  .catch((err) => res.json(err))
 });
 
 router.put("/:id", (req, res) => {
@@ -27,6 +32,9 @@ router.put("/:id", (req, res) => {
 });
 
 router.delete("/:id", (req, res) => {
+  ordersHandler.deleteOrder(req.params.id)
+  .then(e => res.json(e))
+  .catch((err) => res.json(err))
 });
 
 module.exports = router;
