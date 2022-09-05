@@ -1,7 +1,9 @@
 const crud = require('./../../crud');
 
+
 async function createProduct(newProduct){
-    return crud.save('products', undefined, newProduct)
+    const saved =  crud.save('products', undefined, newProduct)
+    return saved;
 }
 
 async function editProduct(idProduct, product){

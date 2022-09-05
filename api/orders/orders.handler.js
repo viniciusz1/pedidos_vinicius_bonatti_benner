@@ -47,7 +47,18 @@ async function editOrder(orderId, order){
     const orderProductsHandler = require('../orderProducts/orderProducts.handler')
     const orderProducts = await orderProductsHandler.getOrderProducts()
     if(!orderProducts.some(e => e.orderId == orderId)){
-        return "Add an item before close the order"
+        throw { 
+            error: '0003', 
+            message: "Order not found. Please check your link", 
+            requiredFields: ["'status': 'close'"]
+        }
+    }
+    if(!order.status){
+        throw { 
+            error: '0002', 
+            message: "You can't close your order", 
+            requiredFields: ["'status': 'close'"] 
+        }
     }
     const newOrder = await getOrderById(orderId)
     newOrder.status = order.status

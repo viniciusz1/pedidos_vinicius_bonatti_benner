@@ -6,10 +6,13 @@ const productsHandler = require("./products.handler");
 router.post("/", (req, res) => {
   productsHandler.createProduct(req.body)
   .then(e => res.json(e))
+  .catch((error) => {
+    res.status(500).json(error)
+  })
 });
 
 router.get("/:id", (req, res) => {
-  res.send('products')
+  
 });
 
 router.get("/", (req, res) => {

@@ -25,5 +25,7 @@ async function verifyifExistUser(idUser) {
 
 module.exports = {
     createUser,
-    verifyifExistUser
+    verifyifExistUser,
+    editUser,
+    deleteUser
 }

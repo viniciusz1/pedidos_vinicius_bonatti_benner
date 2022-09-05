@@ -45,13 +45,20 @@ async function getOrderProducts(){
 async function editOrderProducts(idOrderProducts, orderProducts){
     let ordersHandler = require('../orders/orders.handler')
     let oldOrder = await getOrderProductsById(idOrderProducts)
-    oldOrder.quantity = orderProducts.quantity
+    oldOrder.quantity = oldOrder.quantity - orderProducts.quantity
     let order = await ordersHandler.getOrderById(oldOrder.orderId)
+    if(oldOrder.quantity <= 0){
+        return await crud.remove('orderProducts', idOrderProducts)
+    }
+
     if(order.status == 'open'){
-        console.log(oldOrder)
         return await crud.save('orderProducts', idOrderProducts, oldOrder)
     }else{
-        return "You can't change the quantity"
+        throw { 
+            error: '0001', 
+            message: "You can't change the quantity because your status is not 'open'", 
+            camposNecessarios: ['quantity'] 
+        }
     }
 }
 
