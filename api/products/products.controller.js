@@ -12,17 +12,37 @@ router.post("/", (req, res) => {
 });
 
 router.get("/:id", (req, res) => {
-  
+  productsHandler.getProductsById(req.params.id)
+  .then(e => res.json(e))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.get("/", (req, res) => {
-  res.json('oi');
+  productsHandler.getProducts()
+  .then(e => res.json(e))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.put("/:id", (req, res) => {
+  productsHandler.editProduct(req.params.id, req.body)
+    .then(e =>{
+      res.send(e)
+    })
+    .catch((err) => {    
+      res.status(500).json(err)
+    })
 });
 
 router.delete("/:id", (req, res) => {
+  productsHandler.deleteProduct(req.params.id)
+  .then(e => res.json(e))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 module.exports = router;

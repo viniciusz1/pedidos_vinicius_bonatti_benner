@@ -6,19 +6,25 @@ const ordersHandler = require("./orders.handler");
 router.post("/", (req, res) => {
     ordersHandler.createOrder(req.body)
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.get("/:id", (req, res) => {
   ordersHandler.getOrderById(req.params.id)
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.get("/", (req, res) => {
   ordersHandler.getOrders()
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.put("/:id", (req, res) => {
@@ -26,15 +32,17 @@ router.put("/:id", (req, res) => {
     .then(e =>{
       res.send(e)
     })
-    .catch(err => {
-      res.send(err)
+    .catch((err) => {    
+      res.status(500).json(err)
     })
 });
 
 router.delete("/:id", (req, res) => {
   ordersHandler.deleteOrder(req.params.id)
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 module.exports = router;

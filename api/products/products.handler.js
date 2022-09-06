@@ -18,6 +18,10 @@ async function getProductsById(idProduct){
     return await crud.getById('products',idProduct)
 }
 
+async function getProducts(){
+    return await crud.get('products')
+}
+
 async function verifyifExistProduct(idProduct) {
     let exist = true
     try {
@@ -35,5 +39,6 @@ module.exports = {
     editProduct,
     deleteProduct,
     verifyifExistProduct,
-    getProductsById
+    getProductsById,
+    getProducts
 }

@@ -4,6 +4,14 @@ async function createUser(newUser){
     return crud.save('users', undefined, newUser)
 }
 
+async function getUserById(id) {
+    return crud.getById('users', id)
+}
+
+async function getUser() {
+    return crud.get('users')
+}
+
 async function editUser(idUser, user){
     return await crud.save('users', idUser, user)
 }
@@ -27,5 +35,7 @@ module.exports = {
     createUser,
     verifyifExistUser,
     editUser,
-    deleteUser
+    deleteUser,
+    getUserById,
+    getUser
 }

@@ -6,34 +6,41 @@ const orderProductsHandler = require("./orderProducts.handler");
 router.post("/", (req, res) => {
   orderProductsHandler.createOrderProducts(req.body)
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.get("/:id", (req, res) => {
   orderProductsHandler.getOrderProductsById(req.params.id)
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.get("/", (req, res) => {
   orderProductsHandler.getOrderProducts()
   .then(e => res.json(e))
-  .catch((err) => res.json(err))
+  .catch((err) => {    
+    res.status(500).json(err)
+  })
 });
 
 router.put("/:id", (req, res) => {
   orderProductsHandler.editOrderProducts(req.params.id, req.body)
-    .then(e => res.send(e))
-    .catch(err => {
-        res.send(err)
+    .then(e => res.json(e))
+    .catch((err) => {
+      console.log(err)
+      res.status(500).json(err)
     })
 });
 
 router.delete("/:id", (req, res) => {
     orderProductsHandler.deleteOrderProducts(req.params.id)
-    .then(e => res.send(e))
+    .then(e => res.json(e))
     .catch(err => {
-        res.send(err)
+        res.status(500).json(err)
     })
 });
 
